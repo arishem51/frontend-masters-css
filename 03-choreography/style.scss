@@ -34,8 +34,9 @@ body {
     --color: var(--color-blue);
   }
 
-  animation: slide-up var(--animation-duration) var(--transition-easing);
   --input-animation-delay: calc(var(--animation-duration) / 2);
+  animation: slide-up var(--animation-duration) var(--transition-easing),
+    shake var(--animation-duration) calc(var(--animation-duration) * 2);
 
   > .ui-input,
   > .ui-button {
