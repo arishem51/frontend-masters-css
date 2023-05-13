@@ -29,7 +29,9 @@ ul {
   border-radius: 50%;
   background: radial-gradient(circle at bottom right, #fb2324, #fe932a);
   animation: move-like-a-square 3s;
-  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
+
   margin-left: 50%;
 }
 
