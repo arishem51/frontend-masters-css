@@ -28,31 +28,17 @@ ul {
   width: 5vmin;
   border-radius: 50%;
   background: radial-gradient(circle at bottom right, #fb2324, #fe932a);
-  animation: move-like-a-square 3s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate-reverse;
+  margin: 16px 0 16px 50%;
 
-  margin-left: 50%;
+  --stager: 0.5s;
+  --duration: 2s;
+  --delay: calc((var(--duration) + var(--stager)) * var(--i));
+
+  animation: move var(--duration) var(--delay) both;
 }
 
-@keyframes move-like-a-square {
-  0% {
-    transform: none;
-    scale: 0;
-    background: red;
-  }
-  25% {
-    transform: translateX(100px);
-    scale: 1;
-  }
-  50% {
-    transform: translateX(100px) translateY(100px);
-  }
-  75% {
-    transform: translateX(0) translateY(100px);
-    background: green;
-  }
+@keyframes move {
   100% {
-    transform: translateX(0) translateY(-100px);
+    transform: translateX(25vw);
   }
 }
