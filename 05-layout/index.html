@@ -30,25 +30,52 @@
     appEl.addEventListener("click", handleClick);
 
     function handleClick() {
-      const firstRect = getFigureRect();
-      appEl.dataset.state =
-        appEl.dataset.state === "collapsed" ? "expanded" : "collapsed";
+      const firstRectFigure = getFigureRect();
+      const firstRectCaption = getCaptionRect();
 
-      const lastRect = getFigureRect();
+      toggleAppStyle();
 
+      const lastRectFigure = getFigureRect();
+      const lastRectCaption = getCaptionRect();
+
+      flip(figureEl, firstRectFigure, lastRectFigure);
+      flip(captionEl, firstRectCaption, lastRectCaption);
+    }
+
+    function flip(element, firstRect, lastRect) {
       requestAnimationFrame(() => {
         const delta = getDelta(firstRect, lastRect);
-        figureEl.style.setProperty("--dx", delta.dX);
-        figureEl.style.setProperty("--dy", delta.dY);
-        figureEl.style.setProperty("--dw", delta.dW);
-        figureEl.style.setProperty("--dh", delta.dH);
+        element.style.setProperty("--dx", delta.dX);
+        element.style.setProperty("--dy", delta.dY);
+        element.style.setProperty("--dw", delta.dW);
+        element.style.setProperty("--dh", delta.dH);
 
-        figureEl.dataset.state = "invert";
+        element.dataset.state = "invert";
 
         requestAnimationFrame(() => {
-          figureEl.dataset.state = "play";
+          element.dataset.state = "play";
         });
       });
+    }
+
+    function toggleAppStyle() {
+      const APP_STATES = {
+        collapsed: "collapsed",
+        expanded: "expanded",
+      };
+      const currentAppState = appEl.dataset.state;
+      appEl.dataset.state =
+        currentAppState === APP_STATES.collapsed
+          ? APP_STATES.expanded
+          : APP_STATES.collapsed;
+    }
+
+    function getCaptionRect() {
+      return getElementRect(captionEl);
+    }
+
+    function getFigureRect() {
+      return getElementRect(figureEl);
     }
 
     function getElementRect(element) {
@@ -57,10 +84,6 @@
       }
 
       return element.getBoundingClientRect();
-    }
-
-    function getFigureRect() {
-      return getElementRect(figureEl);
     }
 
     function getDelta(firstRect, lastRect) {
