@@ -11,8 +11,29 @@
     <div class="circle"></div>
   </body>
   <script>
-    const circleEl = document.querySelector('.circle');
+    main();
 
-    // ...
+    function main() {
+      const circleEl = document.querySelector(".circle");
+
+      const setCircleStyleProperty = setElementStyleProperty(circleEl);
+
+      window.addEventListener("pointermove", (event) =>
+        handlePointerMove(event, setCircleStyleProperty)
+      );
+    }
+
+    function handlePointerMove(event, setElementStyle) {
+      const { clientX, clientY } = event;
+
+      setElementStyle("--x", clientX);
+      setElementStyle("--y", clientY);
+    }
+
+    function setElementStyleProperty(element) {
+      return (property, value) => {
+        element.style.setProperty(property, value);
+      };
+    }
   </script>
 </html>
