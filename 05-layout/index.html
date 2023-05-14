@@ -23,14 +23,76 @@
     </div>
   </body>
   <script>
-    const figureEl = document.querySelector('.ui-figure');
-    const captionEl = document.querySelector('.ui-caption');
-    const appEl = document.querySelector('#app');
+    const figureEl = document.querySelector(".ui-figure");
+    const captionEl = document.querySelector(".ui-caption");
+    const appEl = document.querySelector("#app");
 
-    appEl.addEventListener('click', () => {
-      app.dataset.state =
-        app.dataset.state === 'collapsed' ? 'expanded' : 'collapsed';
-    });
-    // ...
+    appEl.addEventListener("click", handleClick);
+
+    function handleClick() {
+      const firstRectFigure = getFigureRect();
+      const firstRectCaption = getCaptionRect();
+
+      toggleAppStyle();
+
+      const lastRectFigure = getFigureRect();
+      const lastRectCaption = getCaptionRect();
+
+      flip(figureEl, firstRectFigure, lastRectFigure);
+      flip(captionEl, firstRectCaption, lastRectCaption);
+    }
+
+    function flip(element, firstRect, lastRect) {
+      requestAnimationFrame(() => {
+        const delta = getDelta(firstRect, lastRect);
+        element.style.setProperty("--dx", delta.dX);
+        element.style.setProperty("--dy", delta.dY);
+        element.style.setProperty("--dw", delta.dW);
+        element.style.setProperty("--dh", delta.dH);
+
+        element.dataset.state = "invert";
+
+        requestAnimationFrame(() => {
+          element.dataset.state = "play";
+        });
+      });
+    }
+
+    function toggleAppStyle() {
+      const APP_STATES = {
+        collapsed: "collapsed",
+        expanded: "expanded",
+      };
+      const currentAppState = appEl.dataset.state;
+      appEl.dataset.state =
+        currentAppState === APP_STATES.collapsed
+          ? APP_STATES.expanded
+          : APP_STATES.collapsed;
+    }
+
+    function getCaptionRect() {
+      return getElementRect(captionEl);
+    }
+
+    function getFigureRect() {
+      return getElementRect(figureEl);
+    }
+
+    function getElementRect(element) {
+      if (!element) {
+        return null;
+      }
+
+      return element.getBoundingClientRect();
+    }
+
+    function getDelta(firstRect, lastRect) {
+      return {
+        dX: firstRect.x - lastRect.x,
+        dY: firstRect.y - lastRect.y,
+        dW: firstRect.width / lastRect.width,
+        dH: firstRect.height / lastRect.height,
+      };
+    }
   </script>
 </html>
