@@ -11,8 +11,70 @@
     <div class="circle"></div>
   </body>
   <script>
-    const circleEl = document.querySelector('.circle');
+    const currentPoints = {
+      x: 0,
+      y: 0,
+    };
 
-    // ...
+    const targetPoints = {
+      x: 0,
+      y: 0,
+    };
+
+    const DELTA_TIME = 0.1;
+
+    let frame = 0;
+
+    main();
+
+    function main() {
+      const circleEl = document.querySelector(".circle");
+
+      window.addEventListener("pointermove", (event) =>
+        handlePointerMove(event)
+      );
+
+      const setCircleStyleProperty = setElementStyleProperty(circleEl);
+
+      requestAnimationFrame(animate(setCircleStyleProperty));
+    }
+
+    function handlePointerMove(event) {
+      const { clientX, clientY } = event;
+      targetPoints.x = clientX;
+      targetPoints.y = clientY;
+      shouldAnimate = true;
+    }
+
+    function setElementStyleProperty(element) {
+      return (property, value) => {
+        element.style.setProperty(property, value);
+      };
+    }
+
+    function createLerp(start, end, delta) {
+      return (end - start) * delta + start;
+    }
+
+    function animate(setElementStyle) {
+      frame += 1;
+      if (frame % 2 === 0) {
+        currentPoints.x = createLerp(
+          currentPoints.x,
+          targetPoints.x,
+          DELTA_TIME
+        );
+        currentPoints.y = createLerp(
+          currentPoints.y,
+          targetPoints.y,
+          DELTA_TIME
+        );
+
+        setElementStyle("--x", currentPoints.x);
+        setElementStyle("--y", currentPoints.y);
+      }
+      requestAnimationFrame(() => animate(setElementStyle));
+    }
+    cancelAnimationFrame();
   </script>
 </html>
