@@ -23,14 +23,53 @@
     </div>
   </body>
   <script>
-    const figureEl = document.querySelector('.ui-figure');
-    const captionEl = document.querySelector('.ui-caption');
-    const appEl = document.querySelector('#app');
+    const figureEl = document.querySelector(".ui-figure");
+    const captionEl = document.querySelector(".ui-caption");
+    const appEl = document.querySelector("#app");
 
-    appEl.addEventListener('click', () => {
-      app.dataset.state =
-        app.dataset.state === 'collapsed' ? 'expanded' : 'collapsed';
-    });
-    // ...
+    appEl.addEventListener("click", handleClick);
+
+    function handleClick() {
+      const firstRect = getFigureRect();
+      appEl.dataset.state =
+        appEl.dataset.state === "collapsed" ? "expanded" : "collapsed";
+
+      const lastRect = getFigureRect();
+
+      requestAnimationFrame(() => {
+        const delta = getDelta(firstRect, lastRect);
+        figureEl.style.setProperty("--dx", delta.dX);
+        figureEl.style.setProperty("--dy", delta.dY);
+        figureEl.style.setProperty("--dw", delta.dW);
+        figureEl.style.setProperty("--dh", delta.dH);
+
+        figureEl.dataset.state = "invert";
+
+        requestAnimationFrame(() => {
+          figureEl.dataset.state = "play";
+        });
+      });
+    }
+
+    function getElementRect(element) {
+      if (!element) {
+        return null;
+      }
+
+      return element.getBoundingClientRect();
+    }
+
+    function getFigureRect() {
+      return getElementRect(figureEl);
+    }
+
+    function getDelta(firstRect, lastRect) {
+      return {
+        dX: firstRect.x - lastRect.x,
+        dY: firstRect.y - lastRect.y,
+        dW: firstRect.width / lastRect.width,
+        dH: firstRect.height / lastRect.height,
+      };
+    }
   </script>
 </html>
