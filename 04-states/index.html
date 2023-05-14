@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="style.scss" />
   </head>
   <body>
-    <form class="ui-form" data-state="subscribe">
+    <form class="ui-form">
       <input class="ui-input" type="email" placeholder="your@email.com" />
-      <button class="ui-button" type="button" onclick="setState('subscribing')">
+      <button class="ui-button" type="button">
         <span>Subscribe</span>
         <span>Subscribing</span>
         <span>Success!</span>
@@ -19,8 +19,42 @@
     </form>
   </body>
   <script>
-    const form = document.querySelector('.ui-form');
+    const form = document.querySelector(".ui-form");
+    const button = document.querySelector(".ui-button");
+    const FORM_STATES = {
+      subscribe: "subscribe",
+      subscribing: "subscribing",
+      success: "success",
+      error: "error",
+    };
 
-    // ...
+    const getCurrentFormState = () => form.dataset.state;
+
+    const setState = (newState) => {
+      const currentFormState = getCurrentFormState();
+      if (currentFormState === newState) {
+        delete form.dataset.state;
+      } else {
+        form.dataset.state = newState;
+      }
+    };
+
+    const WAIT_TIME = 1000;
+
+    button.addEventListener("click", () => {
+      const currentFormState = getCurrentFormState();
+      let newState = FORM_STATES.subscribing;
+
+      setState(newState);
+
+      setTimeout(() => {
+        if (Math.random() >= 0.5) {
+          newState = FORM_STATES.success;
+        } else {
+          newState = FORM_STATES.error;
+        }
+        setState(newState);
+      }, WAIT_TIME);
+    });
   </script>
 </html>

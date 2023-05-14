@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="style.scss" />
   </head>
   <body>
-    <div id="app">
+    <div id="app" data-state="loading">
       <small>Frontend Masters</small>
       <h1>CSS Animation Workshop</h1>
       <ul>
@@ -27,10 +27,7 @@
         <li><a href="/06-reactive/">Reactive Animations</a></li>
         <li><a href="/examples/inflight/">Inflight Example</a></li>
       </ul>
-      <div class="ball" style="--i: 0"></div>
-      <div class="ball" style="--i: 1"></div>
-      <div class="ball" style="--i: 2"></div>
-      <div class="ball" style="--i: 3"></div>
+      <button class="button">Click Me!</button>
     </div>
   </body>
 </html>
