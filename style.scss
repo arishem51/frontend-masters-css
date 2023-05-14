@@ -4,6 +4,13 @@ body {
   font-family: "Open Sans", sans-serif;
   padding: 5vmin;
   background-color: #f4f4f4;
+
+  #app {
+    --opacity: 1;
+    &[data-state="loading"] {
+      --opacity: 0.3;
+    }
+  }
 }
 
 a {
@@ -12,11 +19,13 @@ a {
 
 h1 {
   margin: 0;
+  opacity: var(--opacity);
 }
 
 small {
   text-transform: uppercase;
   font-weight: bold;
+  opacity: var(--opacity);
 }
 
 ul {
@@ -35,6 +44,16 @@ ul {
   --delay: calc((var(--duration) + var(--stager)) * var(--i));
 
   animation: move var(--duration) var(--delay) both;
+}
+
+.button {
+  appearance: none;
+  color: white;
+  background: black;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  opacity: var(--opacity);
 }
 
 @keyframes move {
